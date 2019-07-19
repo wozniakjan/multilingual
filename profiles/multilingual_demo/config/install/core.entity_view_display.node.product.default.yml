@@ -1,0 +1,77 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.product.body
+    - field.field.node.product.field_currency
+    - field.field.node.product.field_image
+    - field.field.node.product.field_interests
+    - field.field.node.product.field_price
+    - field.field.node.product.field_product_id
+    - field.field.node.product.field_subtitle
+    - node.type.product
+  module:
+    - image
+    - options
+    - text
+    - user
+id: node.product.default
+targetEntityType: node
+bundle: product
+mode: default
+content:
+  body:
+    label: hidden
+    type: text_default
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+  field_currency:
+    type: list_default
+    weight: 103
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+  field_image:
+    weight: 101
+    label: hidden
+    settings:
+      image_style: large
+      image_link: file
+    third_party_settings: {  }
+    type: image
+  field_interests:
+    type: entity_reference_label
+    weight: 106
+    label: inline
+    settings:
+      link: true
+    third_party_settings: {  }
+  field_price:
+    type: number_integer
+    weight: 201
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+  field_product_id:
+    type: string
+    weight: 202
+    label: inline
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  field_subtitle:
+    type: string
+    weight: 0
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  links:
+    weight: 203
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  langcode: true

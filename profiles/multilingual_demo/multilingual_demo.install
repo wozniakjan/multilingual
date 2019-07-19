@@ -1,0 +1,406 @@
+<?php
+/**
+ * @file
+ * Install, update, and uninstall functions for the multilingual demo
+ * installation profile.
+ */
+
+use Drupal\block\Entity\Block;
+use Drupal\block_content\Entity\BlockContent;
+use Drupal\Core\Language\LanguageInterface;
+use Drupal\file\Entity\File;
+use Drupal\menu_link_content\Entity\MenuLinkContent;
+use Drupal\node\Entity\Node;
+use Drupal\shortcut\Entity\Shortcut;
+use Drupal\taxonomy\Entity\Term;
+use Drupal\user\Entity\Role;
+use Drupal\user\Entity\User;
+use Drupal\user\RoleInterface;
+use Symfony\Component\Yaml\Parser;
+
+/**
+ * Implements hook_install().
+ *
+ * Perform actions to set up the site for this profile.
+ *
+ * @see system_install()
+ */
+function multilingual_demo_install() {
+  // Ensure the translation fields are created in the database.
+  \Drupal::service('entity.definition_update_manager')->applyUpdates();
+
+  // Allow visitor account creation with administrative approval.
+  $user_settings = \Drupal::configFactory()->getEditable('user.settings');
+  $user_settings->set('register', USER_REGISTER_VISITORS_ADMINISTRATIVE_APPROVAL)->save();
+
+  // Enable default permissions for system roles.
+  user_role_grant_permissions(RoleInterface::ANONYMOUS_ID, array('access comments'));
+  user_role_grant_permissions(RoleInterface::AUTHENTICATED_ID, array('access comments', 'post comments', 'skip comment approval'));
+
+  // Assign user 1 the "administrator" role.
+  $user = User::load(1);
+  $user->addRole('administrator');
+  $user->save();
+
+  user_role_grant_permissions(RoleInterface::ANONYMOUS_ID, array('access site-wide contact form'));
+  user_role_grant_permissions(RoleInterface::AUTHENTICATED_ID, array('access site-wide contact form'));
+
+  // Allow authenticated users to use shortcuts.
+  user_role_grant_permissions(DRUPAL_AUTHENTICATED_RID, array('access shortcuts'));
+
+  // Populate the default shortcut set.
+  $shortcut = Shortcut::create(array(
+    'shortcut_set' => 'default',
+    'title' => t('Add content'),
+    'weight' => -20,
+    'link' => array('uri' => 'internal:/node/add'),
+  ));
+  $shortcut->save();
+
+  $shortcut = Shortcut::create(array(
+    'shortcut_set' => 'default',
+    'title' => t('All content'),
+    'weight' => -19,
+    'link' => array('uri' => 'internal:/admin/content'),
+  ));
+  $shortcut->save();
+
+  // Enable the admin theme.
+  \Drupal::configFactory()->getEditable('node.settings')->set('use_admin_theme', '1')->save();
+
+  // ** CONTENT IMPORT *********************************************************
+
+  // Preload roles as helper for the user creation. Indexed by label.
+  $roles = array();
+  $role_entities = Role::loadMultiple();
+  foreach ($role_entities as $role) {
+    $roles[$role->label()] = $role;
+  }
+
+  // Create files first because we attach them to users and products as well.
+  $images = array();
+  $files = glob(__DIR__ . '/content/images/*.jpg');
+  foreach ($files as $file_name) {
+    file_unmanaged_copy($file_name, 'public://' . basename($file_name));
+    $image = File::create(array('uri' => 'public://' . basename($file_name)));
+    $image->save();
+    $images[basename($file_name)] = $image;
+  }
+
+  // Create users based on the CSV.
+  $users = array();
+  $handle = fopen(__DIR__ . '/content/d8mi-demo-content-user.csv', 'r');
+  $index = 0;
+  while ($line = fgetcsv($handle)) {
+    $index++;
+    if ($index < 3) {
+      continue;
+    }
+    // Roles are provided by label of role, not id of role. Convert.
+    $user_roles = array('authenticated');
+    if (!empty($line[2])) {
+      foreach (explode(',', $line[2]) as $role_label) {
+        if (isset($roles[$role_label])) {
+          $user_roles[] = $roles[$role_label]->id();
+        }
+      }
+    }
+    $user = User::create(
+      array(
+        'name' => $line[0],
+        // Password same as name, this is a demo profile after all.
+        'pass' => $line[0],
+        'mail' => $line[1],
+        'init' => $line[1],
+        'langcode' => $line[3],
+        'preferred_langcode' => $line[3],
+        'field_bio' => array('value' => $line[6], 'format' => 'basic_html'),
+        'status' => 1,
+        'roles' => $user_roles,
+      )
+    );
+    if (!empty($images[$line[4]])) {
+      $user->user_picture = array(array('target_id' => $images[$line[4]]->id()));
+    }
+    if (!empty($line[5])) {
+      $user->field_interests = multilingual_demo_install_terms('interests', $line[5]);
+    }
+    $user->save();
+    $users[$line[0]] = $user;
+  }
+  fclose($handle);
+
+  // Create products based on the CSV.
+  /** @var \Drupal\node\Entity\Node[] $products */
+  $products = array();
+  $product_interests = array();
+  $handle = fopen(__DIR__ . '/content/d8mi-demo-content-product.csv', 'r');
+  $index = 0;
+  while ($line = fgetcsv($handle)) {
+    $index++;
+    if ($index < 3) {
+      continue;
+    }
+    if ($line[1] == 'en') {
+      $node = Node::create(
+        array(
+          'type' => 'product',
+          'langcode' => $line[1],
+          'title' => $line[3],
+          'body' => array('value' => $line[6], 'format' => 'basic_html'),
+          'field_subtitle' => $line[4],
+          'field_product_id' => $line[2],
+          'field_price' => $line[7],
+          'field_currency' => $line[8],
+          'uid' => 1,
+          'sticky' => 1,
+        )
+      );
+      if (!empty($images[$line[9]])) {
+        $node->field_image = array(array('target_id' => $images[$line[9]]->id()));
+      }
+      if (!empty($line[5])) {
+        $product_interests[$line[0]] = explode(',', $line[5]);
+        $node->field_interests = multilingual_demo_install_terms('interests', $line[5]);
+      }
+      $node->save();
+      $products[$line[2]] = $node;
+    }
+    else {
+      // When saving a translation, we already have the node (English comes
+      // first in our case), just need to take a translation language and save
+      // specific values. We put the node back into the local array again for
+      // reference.
+      $entity_array = $products[$line[2]]->toArray();
+      $translated_fields = array(
+        'title' => $line[3],
+        'body' => array('value' => $line[6], 'format' => 'basic_html'),
+        'field_subtitle' => $line[4],
+      );
+      $translated_entity_array = array_merge($entity_array, $translated_fields);
+      $products[$line[2]]->addTranslation(
+        $line[1],
+        $translated_entity_array
+      );
+      $products[$line[2]]->save();
+
+      if (!empty($line[5])) {
+        // If the translation has terms, create translations of the original
+        // terms, if not already present. The field is not translatable, so this
+        // does not affect the node.
+        $english_terms = $product_interests[$line[0]];
+        foreach (explode(',', $line[5]) as $id => $translated_term) {
+          /** @var Drupal\taxonomy\Entity\Term[] $terms */
+          $terms = \Drupal::entityTypeManager()
+            ->getStorage('taxonomy_term')
+            ->loadByProperties(array('name' => trim($english_terms[$id]), 'vid' => 'interests'));
+          if (count($terms)) {
+            $term = array_shift($terms);
+            if (!$term->hasTranslation($line[1])) {
+              $term->addTranslation(
+                $line[1],
+                array(
+                  'name' => trim($translated_term)
+                )
+              );
+              $term->save();
+            }
+          }
+        }
+      }
+    }
+  }
+  fclose($handle);
+
+  // Create pages based on the CSV.
+  /** @var \Drupal\node\Entity\Node[] $pages */
+  $pages = array();
+  $handle = fopen(__DIR__ . '/content/d8mi-demo-content-page.csv', 'r');
+  $index = 0;
+  while ($line = fgetcsv($handle)) {
+    $index++;
+    if ($index < 3) {
+      continue;
+    }
+    if ($line[4] == 'en') {
+      $node = Node::create(
+        array(
+          'type' => 'page',
+          'langcode' => $line[4],
+          'title' => $line[1],
+          'body' => array('value' => $line[3], 'format' => 'basic_html'),
+          'sticky' => 1,
+        )
+      );
+      $node->save();
+      $pages[$line[0]] = $node;
+    }
+    else {
+      // When saving a translation, we already have the node (English comes
+      // first in our case), just need to take a translation language and save
+      // specific values. We put the node back into the local array again for
+      // reference.
+      $pages[$line[0]]->addTranslation(
+        $line[4],
+        array(
+          'title' => $line[1],
+          'body' => array('value' => $line[3], 'format' => 'basic_html'),
+        )
+      );
+      $pages[$line[0]]->save();
+    }
+    /** @var \Drupal\Core\Path\AliasStorageInterface $path_aliases */
+    $path_aliases = \Drupal::service('path.alias_storage');
+    $path_aliases->save(
+      '/node/' . $pages[$line[0]]->id(),
+      '/' . $line[2],
+      // Save without specific language for original content.
+      ($line[4] == 'en' ? LanguageInterface::LANGCODE_NOT_SPECIFIED : $line[4])
+    );
+  }
+  fclose($handle);
+
+  // Create menu items based on the CSV.
+  /** @var \Drupal\menu_link_content\Entity\MenuLinkContent[] $menus */
+  $menus = array();
+  $handle = fopen(__DIR__ . '/content/d8mi-demo-content-menu.csv', 'r');
+  $index = 0;
+  while ($line = fgetcsv($handle)) {
+    $index++;
+    if ($index < 3) {
+      continue;
+    }
+    if ($line[4] == 'en') {
+      $item = MenuLinkContent::create(
+        array(
+          'title' => $line[1],
+          'menu_name' => $line[2],
+          'link' => ['uri' => 'internal:/' . $line[3]],
+          'langcode' => $line[4],
+          'weight' => $line[5],
+          'bundle' => 'menu_link_content'
+        )
+      );
+      $item->save();
+      $menus[$line[0]] = $item;
+    }
+    else {
+      // When saving a translation, we already have the item (English comes
+      // first in our case), just need to take a translation language and save
+      // specific values. We put the item back into the local array again for
+      // reference.
+      $menus[$line[0]]->addTranslation(
+        $line[4],
+        array(
+          'title' => $line[1],
+        )
+      );
+      $menus[$line[0]]->save();
+    }
+  }
+  fclose($handle);
+
+  // Create custom blocks based on the CSV.
+  /** @var Drupal\block_content\Entity\BlockContent[] $blocks */
+  $blocks = array();
+  $block_title_translations = array();
+  $handle = fopen(__DIR__ . '/content/d8mi-demo-content-block.csv', 'r');
+  $index = 0;
+  while ($line = fgetcsv($handle)) {
+    $index++;
+    if ($index < 3) {
+      continue;
+    }
+    if ($line[3] == 'en') {
+      $item = BlockContent::create(
+        array(
+          'info' => $line[1],
+          'type' => 'basic',
+          'body' => array('value' => $line[2], 'format' => 'basic_html'),
+          'langcode' => $line[3],
+        )
+      );
+      $item->save();
+      $blocks[$line[0]] = $item;
+    }
+    else {
+      // When saving a translation, we already have the item (English comes
+      // first in our case), just need to take a translation language and save
+      // specific values. We put the item back into the local array again for
+      // reference.
+      $blocks[$line[0]]->addTranslation(
+        $line[3],
+        array(
+          'info' => $line[1],
+          'type' => 'basic',
+          'body' => array('value' => $line[2], 'format' => 'basic_html'),
+        )
+      );
+      $blocks[$line[0]]->save();
+      $block_title_translations[$line[0]][$line[3]] = $line[1];
+    }
+  }
+  fclose($handle);
+
+  // The custom block placements need to be adjusted with the content UUID. Also
+  // translations need to be saved dynamically as we cannot ship them.
+  $block_placements = array(
+    1 => 'block.block.demotheme_explorewithus',
+    2 => 'block.block.demotheme_drupal8demo',
+  );
+  $yaml_parser = new Parser();
+  foreach ($block_placements as $block_id => $placement_name) {
+    if (isset($blocks[$block_id])) {
+      $yaml = $yaml_parser->parse(file_get_contents(__DIR__ . '/content/' . $placement_name . '.yml'));
+      $yaml['plugin'] = $yaml['settings']['id'] = 'block_content:' . $blocks[$block_id]->uuid();
+      $block_placement = Block::create($yaml);
+      $block_placement->save();
+
+      // Save block placement title translations in config.
+      foreach($block_title_translations[$block_id] as $langcode => $title) {
+        \Drupal::languageManager()->getLanguageConfigOverride($langcode, $placement_name)->set('settings.label', $title)->save();
+      }
+    }
+  }
+
+  // Set the default front page to 'home' page provided by views.
+  \Drupal::configFactory()->getEditable('system.site')->set('page.front', '/home')->save();
+}
+
+/**
+ * Helper function to save terms.
+ *
+ * @param string $vocabulary
+ *   Vocabulary name.
+ * @param string $term_names
+ *   List of terms separated by comma.
+ * @return array
+ *   Arrays with target_id keys to save to entity.
+ */
+function multilingual_demo_install_terms($vocabulary, $term_names) {
+  $term_ids = array();
+  foreach (explode(',', $term_names) as $term_name) {
+    $term_name = trim($term_name);
+
+    // The term may already exist in this vocabulary.
+    $terms = \Drupal::entityTypeManager()
+      ->getStorage('taxonomy_term')
+      ->loadByProperties(array('name' => $term_name, 'vid' => $vocabulary));
+    if (empty($terms)) {
+      // If not, create a new one.
+      $term = Term::create(
+        array(
+          'name' => $term_name,
+          'vid' => $vocabulary,
+        )
+      );
+      $term->save();
+    }
+    else {
+      // If found, there should be only one.
+      $term = array_shift($terms);
+    }
+    $term_ids[] = array('target_id' => $term->id());
+  }
+  return $term_ids;
+}

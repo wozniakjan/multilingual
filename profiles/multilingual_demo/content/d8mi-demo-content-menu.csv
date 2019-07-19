@@ -1,0 +1,10 @@
+Id,Title,Menu,Path,Language,Weight
+id,label/title,menu,path,language,weight
+1,Contact,main,contact,en,20
+1,Kapcsolat,,,hu,
+1,Contacter,,,fr,
+1,Contactar,,,es,
+2,About Us,main,about,en,15
+2,Rólunk,,,hu,
+2,Sobre Nosotros,,,es,
+2,À Propos de Nous,,,fr,

@@ -1,0 +1,35 @@
+display:
+  default:
+    display_title: Maître
+    display_options:
+      exposed_form:
+        options:
+          submit_button: Appliquer
+          reset_button_label: Réinitialiser
+          exposed_sorts_label: 'Trier par'
+      fields:
+        title: {  }
+        field_image: {  }
+      title: 'Dernières Destination de Voyage'
+  trips_grid_page:
+    display_options:
+      menu:
+        title: Accueil
+        description: Accueil
+      fields:
+        title: {  }
+        field_image: {  }
+      title: "Destinations passionnantes"
+  trips_page:
+    display_options:
+      fields:
+        title: {  }
+        field_image: {  }
+        body:
+          label: Corps
+        nothing:
+          alter:
+            text: "<h2>{{title}}</h2>\r\n{{body}}"
+      menu:
+        title: Voyages
+        description: Voyages

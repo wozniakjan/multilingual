@@ -1,0 +1,70 @@
+name: Multilingual Demo
+type: profile
+description: 'Install with multilingual demo features pre-configured.'
+# version: VERSION
+# core: 8.x
+dependencies:
+  - node
+  - history
+  - block
+  - breakpoint
+  - ckeditor
+  - color
+  - config
+  - comment
+  - contextual
+  - contact
+  - menu_link_content
+  - datetime
+  - block_content
+  - quickedit
+  - editor
+  - entity_reference
+  - help
+  - image
+  - menu_ui
+  - options
+  - path
+  - page_cache
+  - dynamic_page_cache
+  - taxonomy
+  - dblog
+  - search
+  - shortcut
+  - toolbar
+  - field_ui
+  - file
+  - rdf
+  - views
+  - views_ui
+  - tour
+  - automated_cron
+  - link
+  - field
+  - filter
+  - system
+  - user
+  - text
+  - language
+  - locale
+  - config_translation
+  - content_translation
+themes:
+  - bartik
+  - demotheme
+  - seven
+keep_english: true
+distribution:
+  name: Multilingual demo
+
+# Locale update, etc. need a version number here. 
+# version: '8.x-1.x-dev'
+# core: '8.x'
+# project: 'drupal'
+# datestamp: 1404296640
+
+# Information added by Drupal.org packaging script on 2018-12-14
+version: '8.x-6.4'
+core: '8.x'
+project: 'multilingual_demo'
+datestamp: 1544825044

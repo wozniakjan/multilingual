@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies: {  }
+name: medium_cropped
+label: 'Medium cropped (300x150)'
+effects:
+  daf19956-4f24-4fc0-b500-cb2d2078135f:
+    uuid: daf19956-4f24-4fc0-b500-cb2d2078135f
+    id: image_scale
+    weight: 1
+    data:
+      width: 300
+      height: ''
+      upscale: false
+  25f4025c-8b70-4547-a003-3aa50fb2a9e9:
+    uuid: 25f4025c-8b70-4547-a003-3aa50fb2a9e9
+    id: image_crop
+    weight: 2
+    data:
+      width: 300
+      height: 150
+      anchor: center-top

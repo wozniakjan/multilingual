@@ -1,0 +1,37 @@
+display:
+  default:
+    display_title: Mester
+    display_options:
+      exposed_form:
+        options:
+          submit_button: Alkalmaz
+          reset_button_label: Alaphelyzet
+          exposed_sorts_label: Rendezés
+          sort_asc_label: Növekvő
+          sort_desc_label: Csökkenő
+      fields:
+        title: {  }
+        field_image: {  }
+      title: 'Legújabb Úticélok'
+  trips_grid_page:
+    display_options:
+      menu:
+        title: Címlap
+        description: Címlap
+      fields:
+        title: {  }
+        field_image: {  }
+      title: 'Izgalmas helyekre'
+  trips_page:
+    display_options:
+      fields:
+        title: {  }
+        field_image: {  }
+        body:
+          label: Törzs
+        nothing:
+          alter:
+            text: "<h2>{{title}}</h2>\r\n{{body}}"
+      menu:
+        title: Kirándulások
+        description: Kirándulások

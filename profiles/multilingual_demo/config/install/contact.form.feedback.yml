@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies: {  }
+id: feedback
+label: 'Demo website feedback'
+recipients:
+  - demo@drupal8multilingual.org
+reply: 'Thank you for contacting us. We''ll get back to you shortly.'
+weight: 0

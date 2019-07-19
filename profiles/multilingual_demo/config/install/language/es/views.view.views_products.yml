@@ -1,0 +1,35 @@
+display:
+  default:
+    display_title: Maestro
+    display_options:
+      exposed_form:
+        options:
+          submit_button: Aplicar
+          reset_button_label: Reiniciar
+          exposed_sorts_label: 'Ordenar por'
+      fields:
+        title: {  }
+        field_image: {  }
+      title: 'Las últimas Destinos'
+  trips_grid_page:
+    display_options:
+      menu:
+        title: Inicio
+        description: Inicio
+      fields:
+        title: {  }
+        field_image: {  }
+      title: 'Emocionantes destinos'
+  trips_page:
+    display_options:
+      fields:
+        title: {  }
+        field_image: {  }
+        body:
+          label: Cuerpo
+        nothing:
+          alter:
+            text: "<h2>{{title}}</h2>\r\n{{body}}"
+      menu:
+        title: Excursiones
+        description: Excursiones

@@ -1,0 +1,65 @@
+/** Restyle Bartik a bit **/
+@import url(http://fonts.googleapis.com/css?family=Francois+One);
+@import url(http://fonts.googleapis.com/css?family=PT+Serif:400,700);
+
+#page #header {
+  background-image: none;
+  background-color: #016b83;
+}
+
+#header, #footer-wrapper, .skip-link, ul.contextual-links, ul.links, ul.primary, .item-list .pager, div.field--type-entity-reference, div.messages, .node__meta, p.comment-time, table, .breadcrumb, .link {
+  font-family: 'Francois One', sans-serif !important;
+}
+
+body, #site-slogan, .site-slogan, #page .ui-widget, .comment-form label, .node-form label, .node-form .description {
+  font-family: 'PT Serif', serif !important;
+}
+
+/** Site specific styles **/
+
+.language-switcher-language-url ul li {
+  text-transform: capitalize;
+}
+
+article.node--type-product .field--name-field-image {
+  float: right;
+  margin-left: 5em;
+}
+
+article.profile .field--name-user-picture,
+.view-views-reviews.view-display-id-product_reviews_block .views-field-user-picture {
+  float: right;
+  margin: 0 0 2em 2em;
+}
+
+.views-field-user-picture a {
+  border-bottom: none;
+}
+
+.view-views-reviews.view-display-id-product_reviews_block .views-row {
+  clear: both;
+  border-top: 1px dotted #cdcdcd;
+  margin: 1em;
+}
+
+.view-views-reviews .views-field-title {
+  font-weight: bold;
+  margin: 1em 0;
+}
+
+.view-display-id-trips_page img {
+  max-width: none;
+}
+
+.view-display-id-trips_grid_page a {
+  border-bottom: none;
+}
+
+.field--name-field-price {
+  float: left;
+}
+
+.field--name-field-subtitle {
+  font-weight: bold;
+  margin: 2em 0;
+}

@@ -1,0 +1,247 @@
+Name,Email,Roles,Language,Picture,Interests,Bio
+username,mail,roles,language,user_picture,field_interests,field_bio
+MollyTravels,MollyTravels@example.com,,en,molly.jpg,"Adventure,Spa,Tropical","<h2>Persona: End-user</h2>
+
+<h2>Who are they?</h2>
+
+<p>This is someone who is visiting the site and viewing its content that is interesting and relevant to them.</p>
+
+<h3>What makes them tick?</h3>
+
+<ul>
+ <li><span style=""line-height:1.6em"">Interesting and relevant content</span></li>
+ <li>Evaluating products</li>
+ <li>Easily navigating the site</li>
+</ul>
+
+<h3>How are they using Drupal?</h3>
+
+<ul>
+ <li>Looking for content relevant to their wants/needs</li>
+ <li>Clicking on what interests them on the page</li>
+ <li>Writing reviews/blog posts</li>
+</ul>
+
+<h3>What frustrates them?</h3>
+
+<ul>
+ <li>Sites that aren't easy to navigate</li>
+ <li>Not being able to access content easily</li>
+</ul>
+"
+MelissaBrady,MelissaBrady@example.com,,en,melissa.jpg,"Bar,Beer,Room Service","<h2>Persona: End-user</h2>
+
+<h2>Who are they?</h2>
+
+<p>This is someone who is visiting the site and viewing its content that is interesting and relevant to them.</p>
+
+<h3>What makes them tick?</h3>
+
+<ul>
+ <li><span style=""line-height:1.6em"">Interesting and relevant content</span></li>
+ <li>Evaluating products</li>
+ <li>Easily navigating the site</li>
+</ul>
+
+<h3>How are they using Drupal?</h3>
+
+<ul>
+ <li>Looking for content relevant to their wants/needs</li>
+ <li>Clicking on what interests them on the page</li>
+ <li>Writing reviews/blog posts</li>
+</ul>
+
+<h3>What frustrates them?</h3>
+
+<ul>
+ <li>Sites that aren't easy to navigate</li>
+ <li>Not being able to access content easily</li>
+</ul>
+"
+TomCasey,TomCasey@example.com,,en,tom.jpg,"Europe,Foodie,Germany","<h2>Persona: End-user</h2>
+
+<h2>Who are they?</h2>
+
+<p>This is someone who is visiting the site and viewing its content that is interesting and relevant to them.</p>
+
+<h3>What makes them tick?</h3>
+
+<ul>
+ <li><span style=""line-height:1.6em"">Interesting and relevant content</span></li>
+ <li>Evaluating products</li>
+ <li>Easily navigating the site</li>
+</ul>
+
+<h3>How are they using Drupal?</h3>
+
+<ul>
+ <li>Looking for content relevant to their wants/needs</li>
+ <li>Clicking on what interests them on the page</li>
+ <li>Writing reviews/blog posts</li>
+</ul>
+
+<h3>What frustrates them?</h3>
+
+<ul>
+ <li>Sites that aren't easy to navigate</li>
+ <li>Not being able to access content easily</li>
+</ul>
+"
+StephenDay,StephenDay@example.com,,en,stephen.jpg,"Adventure,Parks","<h2>Persona: End-user</h2>
+
+<h2>Who are they?</h2>
+
+<p>This is someone who is visiting the site and viewing its content that is interesting and relevant to them.</p>
+
+<h3>What makes them tick?</h3>
+
+<ul>
+ <li><span style=""line-height:1.6em"">Interesting and relevant content</span></li>
+ <li>Evaluating products</li>
+ <li>Easily navigating the site</li>
+</ul>
+
+<h3>How are they using Drupal?</h3>
+
+<ul>
+ <li>Looking for content relevant to their wants/needs</li>
+ <li>Clicking on what interests them on the page</li>
+ <li>Writing reviews/blog posts</li>
+</ul>
+
+<h3>What frustrates them?</h3>
+
+<ul>
+ <li>Sites that aren't easy to navigate</li>
+ <li>Not being able to access content easily</li>
+</ul>
+"
+JenniferThomson,JenniferThomson@example.com,,en,jennifer.jpg,"Resort,Spa,Tropical","<h2>Persona: End-user</h2>
+
+<h2>Who are they?</h2>
+
+<p>This is someone who is visiting the site and viewing its content that is interesting and relevant to them.</p>
+
+<h3>What makes them tick?</h3>
+
+<ul>
+ <li><span style=""line-height:1.6em"">Interesting and relevant content</span></li>
+ <li>Evaluating products</li>
+ <li>Easily navigating the site</li>
+</ul>
+
+<h3>How are they using Drupal?</h3>
+
+<ul>
+ <li>Looking for content relevant to their wants/needs</li>
+ <li>Clicking on what interests them on the page</li>
+ <li>Writing reviews/blog posts</li>
+</ul>
+
+<h3>What frustrates them?</h3>
+
+<ul>
+ <li>Sites that aren't easy to navigate</li>
+ <li>Not being able to access content easily</li>
+</ul>
+"
+AdamIngram,AdamIngram@example.com,Administrator,en,adam.jpg,"Parks,Recreation","<h2>Persona: Administrator</h2>
+
+<h3>Who are they?</h3>
+
+<p>This person role is to be the site owner and oversee the entire site to enable a functional and efficient user experience.</p>
+
+<h3>What makes them tick?</h3>
+
+<ul>
+ <li>Setting roles and permissions.</li>
+ <li>Manage content and moderation workflow.</li>
+ <li>Maintaining quality code and site configurations.</li>
+</ul>
+
+<h3>What frustrates them?</h3>
+
+<p>No editing experience.</p>
+"
+PaulSimon,PaulSimon@example.com,"Curator,Reviewer",en,paul.jpg,"Bar,Beer,Europe,Germany,Nightlife","<h2>Persona: Editor (Reviewer)</h2>
+
+<h3>Who are they?</h3>
+
+<ul>
+ <li>Create new content.</li>
+ <li>Review all posted content.</li>
+ <li>Approve content to production environment.</li>
+</ul>
+
+<h3>What makes them tick?</h3>
+
+<p>This person wants permissions and roles to be defined and the workflows to be in place to make it easy and readily accessible to approve appropriate content and move to production in an efficient manner.</p>
+
+<ul>
+ <li>Editing content (update)</li>
+ <li>Syndicate content</li>
+ <li>Reviewing content that has been added to the site and approve content workflow.</li>
+</ul>
+
+<h3>What frustrates them?</h3>
+
+<ul>
+ <li>Inefficient editing experience Workflows and permissions/roles that aren't defined</li>
+ <li>Mistakes, misprints, explicit content on Production site</li>
+</ul>
+"
+EricaWebb,EricaWebb@example.com,Curator,en,erica.jpg,"Parks,Recreation,Resort,Vacation","<h2>Persona: Editor (Curator)</h2>
+
+<h3>Who are they?</h3>
+
+<ul>
+ <li>Create new content.</li>
+ <li>Review all posted content.</li>
+ <li>Promote content to be reviewed for production.</li>
+</ul>
+
+<h3>What makes them tick?</h3>
+
+<p>This person wants permissions and roles to be defined and the workflows to be in place to make it easy and readily accessible to approve appropriate content and move to production in an efficient manner.</p>
+
+<ul>
+ <li>Editing content (update)</li>
+ <li>Syndicate content</li>
+ <li>Reviewing content that has been added to the site and use content workflow.</li>
+</ul>
+
+<h3>What frustrates them?</h3>
+
+<ul>
+ <li>Inefficient editing experience Workflows and permissions/roles that aren't defined</li>
+ <li>Mistakes, misprints, explicit content on Production site</li>
+</ul>
+"
+EmilyPhillips,EmilyPhilips@example.com,"Curator,Translator,Marketer",en,emily.jpg,"France,Spa,Tropical","<h2>Persona: Digital Marketer</h2>
+
+<h3>Who are they?</h3>
+
+<ul>
+ <li>Occasionally update the site with fresh marketing content.</li>
+ <li>Interested in creating landing pages and/or microsites.</li>
+</ul>
+
+<h3>What makes them tick?</h3>
+
+<ul>
+ <li>Easy content editing experience</li>
+ <li>Adding content quickly and easily</li>
+ <li>Create new pages</li>
+ <li>Flexibility to create web experiences with best of breed tools to drive conversions</li>
+</ul>
+
+<h3>What frustrates them?</h3>
+
+<ul>
+ <li>Cumbersome back end experience</li>
+ <li>Difficulty logging in and adding updated relevant content</li>
+ <li>Creating new pages long/tedious process</li>
+</ul>
+"
+CoryAlter,cory@example.com,"Curator,Marketer",en,,,
+MikeReddit,reddit@example.com,"Curator,Translator,Marketer",en,,,
